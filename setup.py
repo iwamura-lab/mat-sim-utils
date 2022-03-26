@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -17,13 +17,15 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    py_modules=["bump_version"],
+    packages=find_packages(),
+    include_package_data=True,
     python_requires=">=3.7",
     install_requires=[
         "Click",
     ],
-    entry_points="""
-        [console_scripts]
-        bump_version=bump_version:cli
-    """,
+    entry_points={
+        "console_scripts": [
+            "bump_version=utils.bump_version:cli",
+        ],
+    },
 )

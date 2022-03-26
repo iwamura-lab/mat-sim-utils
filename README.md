@@ -1,2 +1,2 @@
 # utils
-Command line interface based utilities
+CLI(Command Line Interface) utilities
