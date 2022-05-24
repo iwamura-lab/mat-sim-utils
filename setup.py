@@ -26,6 +26,7 @@ setup(
     entry_points={
         "console_scripts": [
             "bump_version=utils.bump_version:cli",
+            "structure_converter=utils.scripts.structure_converter:main",
         ],
     },
 )
