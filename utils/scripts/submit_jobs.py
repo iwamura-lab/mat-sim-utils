@@ -7,6 +7,15 @@ import click
 
 
 def make_job_script(name: str, core: int) -> str:
+    """Make job script of given parameters
+
+    Args:
+        name (str): job name
+        core (int): core number
+
+    Returns:
+        str: the content of job script file
+    """
     job_script_content = (
         "#######################################################################\n"
         "#$ -S /bin/zsh\n"
