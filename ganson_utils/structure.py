@@ -1,6 +1,7 @@
 from typing import Dict
 
 from ase.io import read
+from ase.io.vasp import write_vasp
 from pymatgen.core.periodic_table import Element
 
 
@@ -28,4 +29,4 @@ def convert_lammps_structure_to_poscar_by_ase(
     atoms = read(
         lammps_structure_file, format="lammps-data", Z_of_type=z_of_type, style="atomic"
     )
-    atoms.write(poscar_structure_file, format="vasp")
+    write_vasp(poscar_structure_file, atoms=atoms, direct=True)

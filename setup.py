@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="utils",
+    name="ganson_utils",
     version="0.1.0",
     author="Taiki Iwamura",
     author_email="takki.0206@gmail.com",
@@ -19,15 +19,17 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[
-        "Click",
+        "click",
+        "ase",
+        "pymatgen",
     ],
     entry_points={
         "console_scripts": [
-            "bump_version=utils.bump_version:cli",
-            "submit_jobs=utils.scripts.submit_jobs:main",
-            "structure_converter=utils.scripts.structure_converter:main",
+            "bump_version=ganson_utils.bump_version:cli",
+            "submit_jobs=ganson_utils.scripts.submit_jobs:main",
+            "structure_converter=ganson_utils.scripts.structure_converter:main",
         ],
     },
 )

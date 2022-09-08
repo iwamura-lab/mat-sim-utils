@@ -1,6 +1,6 @@
 import click
 
-from utils.structure import convert_lammps_structure_to_poscar_by_ase
+from ganson_utils.structure import convert_lammps_structure_to_poscar_by_ase
 
 
 @click.command()
