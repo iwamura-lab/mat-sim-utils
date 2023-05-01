@@ -29,6 +29,7 @@ setup(
         "console_scripts": [
             "bump_version=ganson_utils.bump_version:cli",
             "submit_jobs=ganson_utils.scripts.submit_jobs:main",
+            "show_mem_alloc=ganson_utils.scripts.show_mem_alloc:main",
             "structure_converter=ganson_utils.scripts.structure_converter:main",
         ],
     },
