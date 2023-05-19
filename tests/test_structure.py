@@ -1,16 +1,16 @@
-from lammps_api.struct_utils import convert_poscar_to_lammps_structure
+from lammps_api.struct_utils import convert_lammps_structure_to_poscar
 from pymatgen.io.vasp import Poscar
 
 from mat_sim_utils.structure import convert_lammps_structure_to_poscar_by_ase
 
-test_structure_ids = ["042", "049", "091"]
+TEST_STRUCTURE_IDS = ["042", "049", "091"]
 
 
 def test_convert_lammps_structure_to_poscar(
     structure_matcher, inputs_dir_path, outputs_dir_path
 ):
     # Dump POSCARs
-    for structure_id in test_structure_ids:
+    for structure_id in TEST_STRUCTURE_IDS:
         structure_file_path = (
             inputs_dir_path / "Fe" / "structures" / f"structure-{structure_id}"
         )
@@ -28,9 +28,10 @@ def test_convert_lammps_structure_to_poscar(
 
         # Generate new structure files by seko's program
         poscar_file_path = outputs_dir_path / "seko" / f"poscar-{structure_id}"
-        convert_poscar_to_lammps_structure(
+        convert_lammps_structure_to_poscar(
             lammps_structure_filename=str(structure_file_path),
             poscar_filename=str(poscar_file_path),
+            element_of_each_type=symbol_of_each_type,
         )
 
     # Load generated POSCARs
@@ -40,13 +41,13 @@ def test_convert_lammps_structure_to_poscar(
                 [str(outputs_dir_path), "structure_converter", f"poscar-{structure_id}"]
             )
         )
-        for structure_id in test_structure_ids
+        for structure_id in TEST_STRUCTURE_IDS
     ]
     seko_poscars = [
         Poscar.from_file(
             "/".join([str(outputs_dir_path), "seko", f"poscar-{structure_id}"])
         )
-        for structure_id in test_structure_ids
+        for structure_id in TEST_STRUCTURE_IDS
     ]
 
     # Test if two structures are same
