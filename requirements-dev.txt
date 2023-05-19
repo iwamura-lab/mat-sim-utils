@@ -1,3 +1,4 @@
+lammps_api
 mypy
 flake8
 black

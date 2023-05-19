@@ -3,6 +3,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python
 
 ### Python ###
+# Private settings
+/tests/data/outputs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
