@@ -5,9 +5,14 @@ import click
 
 
 @click.command()
-def main() -> None:
+@click.option(
+    "--user_name", default="iwamura", show_default=True, help="Your user name."
+)
+def main(user_name) -> None:
     """Show current memory allocation on each node"""
-    show_job_name_command = "squeue | grep iwamura | grep ' R ' | awk '{print $1,$3}'"
+    show_job_name_command = " ".join(
+        [f"squeue | grep {user_name} |", "grep ' R ' | awk '{print $1,$3}'"]
+    )
     result = subprocess.run(show_job_name_command, shell=True, stdout=subprocess.PIPE)
     stdout = result.stdout.decode("utf-8")
     time.sleep(0.1)
@@ -18,8 +23,8 @@ def main() -> None:
     }
 
     show_mem_alloc_command = (
-        "for jid in $(squeue | grep iwamura | grep ' R ' | awk '{print $1}');"
-        " do sstat -n -j ${jid} -o JobID,MaxRSS; done"
+        f"for jid in $(squeue | grep {user_name} | grep ' R '"
+        "| awk '{print $1}'); do sstat -n -j ${jid} -o JobID,MaxRSS; done"
     )
     result = subprocess.run(show_mem_alloc_command, shell=True, stdout=subprocess.PIPE)
     stdout = result.stdout.decode("utf-8")
