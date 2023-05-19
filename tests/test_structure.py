@@ -1,7 +1,7 @@
-from lammps_api.utils import convert_lammps_structure_to_poscar
+from lammps_api.struct_utils import convert_poscar_to_lammps_structure
 from pymatgen.io.vasp import Poscar
 
-from utils.structure import convert_lammps_structure_to_poscar_by_ase
+from mat_sim_utils.structure import convert_lammps_structure_to_poscar_by_ase
 
 test_structure_ids = ["042", "049", "091"]
 
@@ -28,9 +28,9 @@ def test_convert_lammps_structure_to_poscar(
 
         # Generate new structure files by seko's program
         poscar_file_path = outputs_dir_path / "seko" / f"poscar-{structure_id}"
-        convert_lammps_structure_to_poscar(
-            lammps_structure_file=str(structure_file_path),
-            poscar_structure_file=str(poscar_file_path),
+        convert_poscar_to_lammps_structure(
+            lammps_structure_filename=str(structure_file_path),
+            poscar_filename=str(poscar_file_path),
         )
 
     # Load generated POSCARs
