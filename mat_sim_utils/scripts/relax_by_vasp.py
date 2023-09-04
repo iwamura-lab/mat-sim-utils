@@ -17,6 +17,7 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
         run(["cp", "INCAR-relax", "INCAR"])
     run(["cp", "POSCAR", "POSCAR.init"])
 
+    # Run Vasp at least once and continue until convergence
     converged = False
     for i in range(max_iterations):
         run(vasp_command)
@@ -36,6 +37,7 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
         run(["cp", "INCAR-final", "INCAR"])
         run(vasp_command)
 
+    # Output a log if relaxation doesn't converge in max_iterations run
     if not converged:
         with open("fail.log", "w") as f:
             f.write("Relaxation failed.")
