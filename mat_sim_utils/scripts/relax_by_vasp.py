@@ -1,3 +1,4 @@
+from pathlib import Path
 from subprocess import run
 
 import click
@@ -14,6 +15,8 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
     vasp_command = ["mpirun", "-np", n_core, "/usr/local/calc/vasp/vasp544mpi"]
 
     if run_static:
+        if Path("KPOINTS-relax").exists():
+            run(["cp", "KPOINTS-relax", "KPOINTS"])
         run(["cp", "INCAR-relax", "INCAR"])
     run(["cp", "POSCAR", "POSCAR.init"])
 
@@ -34,6 +37,8 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
             break
 
     if run_static and converged:
+        if Path("KPOINTS-final").exists():
+            run(["cp", "KPOINTS-final", "KPOINTS"])
         run(["cp", "INCAR-final", "INCAR"])
         run(vasp_command)
 
