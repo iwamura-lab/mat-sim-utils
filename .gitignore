@@ -4,6 +4,7 @@
 
 ### Python ###
 # Private settings
+/exp/
 /tests/data/outputs/
 
 # Byte-compiled / optimized / DLL files
