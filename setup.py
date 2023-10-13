@@ -32,6 +32,10 @@ setup(
             "bump_version=mat_sim_utils.bump_version:cli",
             "submit_jobs=mat_sim_utils.scripts.submit_jobs:main",
             "relax_by_vasp=mat_sim_utils.scripts.relax_by_vasp:main",
+            (
+                "reproduce_poscar=mat_sim_utils.scripts."
+                "reproduce_poscar_from_vasprun_xml:main"
+            ),
             "show_mem_alloc=mat_sim_utils.scripts.show_mem_alloc:main",
             f"structure_converter={structure_converter_src}",
         ],
