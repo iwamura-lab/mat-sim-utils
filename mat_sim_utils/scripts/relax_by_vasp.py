@@ -1,8 +1,24 @@
+import re
 from pathlib import Path
 from subprocess import run
 
 import click
 from pymatgen.io.vasp import Vasprun
+
+
+def extract_vasprun_id(filename: str) -> int:
+    """Extract vasprun_id from the filename of vasprun.xml
+
+    Args:
+        filename (str): The filename of a vasprun.xml.
+
+    Returns:
+        int: vasprun_id.
+    """
+    vasprun_xml_pattern = re.compile(r"vasprun_(\d+).xml")
+    m = vasprun_xml_pattern.search(filename)
+    assert m is not None
+    return int(m.group(1))
 
 
 @click.command()
@@ -18,7 +34,18 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
         if Path("KPOINTS-relax").exists():
             run(["cp", "KPOINTS-relax", "KPOINTS"])
         run(["cp", "INCAR-relax", "INCAR"])
-    run(["cp", "POSCAR", "POSCAR.init"])
+
+    # Find the IDs of vasprun.xml in the current directory
+    vasprun_id_list = [
+        extract_vasprun_id(path.name) for path in Path.cwd().glob("vasprun_*.xml")
+    ]
+    vasprun_id_list.sort()
+
+    # Calculate the number which vasprun_id begins with
+    vasprun_id_begin = 1 if len(vasprun_id_list) == 0 else vasprun_id_list[-1] + 1
+
+    if len(vasprun_id_list) == 0:
+        run(["cp", "POSCAR", "POSCAR.init"])
 
     # Run Vasp at least once and continue until convergence
     converged = False
@@ -26,7 +53,7 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
         run(vasp_command)
 
         run(["cp", "CONTCAR", "POSCAR"])
-        vasprun_id = str(i + 1).zfill(2)
+        vasprun_id = str(vasprun_id_begin + i).zfill(2)
         run(["cp", "vasprun.xml", f"vasprun_{vasprun_id}.xml"])
 
         vasprun = Vasprun(
