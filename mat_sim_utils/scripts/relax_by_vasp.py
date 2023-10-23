@@ -52,8 +52,10 @@ def main(n_core, run_static) -> None:  # noqa: CCR001
     for i in range(max_iterations):
         run(vasp_command)
 
-        run(["cp", "CONTCAR", "POSCAR"])
         vasprun_id = str(vasprun_id_begin + i).zfill(2)
+        run(["cp", "CONTCAR", "POSCAR"])
+        run(["cp", "CONTCAR", f"CONTCAR_{vasprun_id}"])
+
         run(["cp", "vasprun.xml", f"vasprun_{vasprun_id}.xml"])
 
         vasprun = Vasprun(
