@@ -33,6 +33,10 @@ setup(
             "submit_jobs=mat_sim_utils.scripts.submit_jobs:main",
             "relax_by_vasp=mat_sim_utils.scripts.relax_by_vasp:main",
             (
+                "clndir_to_resume_relax="
+                "mat_sim_utils.scripts.clean_directory_to_resume_relax:main"
+            ),
+            (
                 "reproduce_poscar=mat_sim_utils.scripts."
                 "reproduce_poscar_from_vasprun_xml:main"
             ),
