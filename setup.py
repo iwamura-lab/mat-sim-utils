@@ -32,6 +32,7 @@ setup(
             "bump_version=mat_sim_utils.bump_version:cli",
             "job-scripter=mat_sim_utils.scripts.job_scripter:main",
             "submit_jobs=mat_sim_utils.scripts.submit_jobs:main",
+            "keep-resource=mat_sim_utils.scripts.keep_resource:main",
             "relax_by_vasp=mat_sim_utils.scripts.relax_by_vasp:main",
             (
                 "clndir_to_resume_relax="
