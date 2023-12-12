@@ -30,6 +30,7 @@ setup(
     entry_points={
         "console_scripts": [
             "bump_version=mat_sim_utils.bump_version:cli",
+            "job-scripter=mat_sim_utils.scripts.job_scripter:main",
             "submit_jobs=mat_sim_utils.scripts.submit_jobs:main",
             "relax_by_vasp=mat_sim_utils.scripts.relax_by_vasp:main",
             (
