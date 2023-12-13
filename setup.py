@@ -10,10 +10,10 @@ setup(
     version="1.1.0",
     author="Taiki Iwamura",
     author_email="takki.0206@gmail.com",
-    description="command line interface based utilities",
+    description="CLI applications for materials simulation",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/iwamura-lab/mat-sim-utils",
+    url="https://github.com/t-iwamura/mat-sim-utils",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

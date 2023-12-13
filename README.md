@@ -1,10 +1,10 @@
 # mat-sim-utils
 
-CLI utilities for materials simulation
+CLI applications for materials simulation
 
 ## Overview
 
-This Python package is CLI utilities for materials simulation. By installing this package, you can utilize various commands convenient when simulating materials.
+This repository holds various CLI applications for materials simulation. By installing this package, you can utilize various commands convenient when simulating materials.
 
 ## Installation
 
