@@ -7,7 +7,7 @@ structure_converter_src = "mat_sim_apps.scripts.structure_converter:main"
 
 setup(
     name="mat_sim_apps",
-    version="1.1.0",
+    version="1.2.0",
     author="Taiki Iwamura",
     author_email="takki.0206@gmail.com",
     description="CLI applications for materials simulation",
