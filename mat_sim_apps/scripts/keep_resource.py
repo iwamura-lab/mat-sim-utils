@@ -4,7 +4,7 @@ from subprocess import run
 
 import click
 
-from mat_sim_utils.fileio import create_job_script
+from mat_sim_apps.fileio import create_job_script
 
 
 @click.command()
