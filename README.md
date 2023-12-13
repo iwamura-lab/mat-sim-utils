@@ -1,4 +1,4 @@
-# mat-sim-utils
+# mat-sim-apps
 
 CLI applications for materials simulation
 
@@ -11,7 +11,7 @@ This repository holds various CLI applications for materials simulation. By inst
 Git clone this repository and run following commands.
 
 ```shell
-$ cd <mat-sim-utils root>
+$ cd <mat-sim-apps root>
 $ pip install .
 ```
 

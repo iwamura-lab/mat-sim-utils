@@ -1,6 +1,6 @@
 import click
 
-from mat_sim_utils.structure import convert_lammps_structure_to_poscar_by_ase
+from mat_sim_apps.structure import convert_lammps_structure_to_poscar_by_ase
 
 
 @click.command()
