@@ -4,6 +4,7 @@ from subprocess import run
 
 from pymatgen.io.vasp import Vasprun
 
+from mat_sim_apps.structure import refine_poscar_file
 from mat_sim_apps.utils import extract_vasprun_id
 
 
@@ -19,6 +20,7 @@ def run_vasp() -> None:
 # flake8: noqa: CCR001
 def relax_by_vasp(
     incar_relax: str = "INCAR-relax",
+    refine_poscar: bool = False,
     run_static: bool = False,
 ) -> None:
     n_core = multiprocessing.cpu_count()
@@ -50,6 +52,9 @@ def relax_by_vasp(
         vasprun_id = str(vasprun_id_begin + i).zfill(2)
         run(["cp", "CONTCAR", "POSCAR"])
         run(["cp", "CONTCAR", f"CONTCAR_{vasprun_id}"])
+
+        if refine_poscar:
+            refine_poscar_file()
 
         run(["cp", "vasprun.xml", f"vasprun_{vasprun_id}.xml"])
 
