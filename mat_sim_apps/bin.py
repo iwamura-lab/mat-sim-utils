@@ -45,17 +45,32 @@ def run_vasp() -> None:
 
 # flake8: noqa: CCR001
 def relax_by_vasp(
-    incar_relax: str = "INCAR-relax",
+    incar_relax: str = "INCAR",
     refine_poscar: bool = False,
     run_static: bool = False,
-) -> None:
+    max_iterations: int = 10,
+) -> str:
+    """Relax by VASP
+
+    Args:
+        incar_relax (str, optional): INCAR for relaxation in current directory.
+            Defaults to "INCAR".
+        refine_poscar (bool, optional): Whether to refine POSCAR or not.
+            Defaults to False.
+        run_static (bool, optional): Whether to run extra static calculation or not.
+            Defaults to False.
+        max_iterations (int, optional): The maximum of iterations. Defaults to 10.
+
+    Returns:
+        str: The status code.
+    """
     n_core = multiprocessing.cpu_count()
-    max_iterations = 10
     vasp_command = ["mpirun", "-np", str(n_core), "/usr/local/calc/vasp/vasp544mpi"]
 
     if run_static:
         if Path("KPOINTS-relax").exists():
             run(["cp", "KPOINTS-relax", "KPOINTS"])
+    if incar_relax != "INCAR":
         run(["cp", incar_relax, "INCAR"])
 
     # Find the IDs of vasprun.xml in the current directory
@@ -71,9 +86,16 @@ def relax_by_vasp(
         run(["cp", "POSCAR", "POSCAR.init"])
 
     # Run Vasp at least once and continue until convergence
-    converged = False
+    status_code = "SUCCESS"
     for i in range(max_iterations):
         run(vasp_command)
+
+        status_code = check_std_log()
+        if status_code != "SUCCESS":
+            break
+
+        if max_iterations == 1:
+            break
 
         vasprun_id = str(vasprun_id_begin + i).zfill(2)
         run(["cp", "CONTCAR", "POSCAR"])
@@ -88,16 +110,12 @@ def relax_by_vasp(
             "vasprun.xml", parse_dos=False, parse_eigen=False, parse_potcar_file=False
         )
         if (i >= 1) and vasprun.converged_ionic:
-            converged = True
             break
 
-    if run_static and converged:
+    if run_static and (status_code == "SUCCESS"):
         if Path("KPOINTS-final").exists():
             run(["cp", "KPOINTS-final", "KPOINTS"])
         run(["cp", "INCAR-final", "INCAR"])
         run(vasp_command)
 
-    # Output a log if relaxation doesn't converge in max_iterations run
-    if not converged:
-        with open("fail.log", "w") as f:
-            print("Relaxation failed.", file=f)
+    return status_code
