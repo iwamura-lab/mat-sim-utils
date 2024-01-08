@@ -38,6 +38,14 @@ def convert_lammps_structure_to_poscar_by_ase(
 
 # flake8: noqa: CCR001
 def optimize_fractional_coordinates(coords: NDArray) -> List[float]:
+    """Optimize fractional coordinates
+
+    Args:
+        coords (NDArray): The fractional coordinates of Structure object.
+
+    Returns:
+        List[float]: Original object of fractional coordinates.
+    """
     n_atom = len(coords)
     new_coords = []
     for i in range(n_atom):
@@ -58,6 +66,16 @@ def optimize_fractional_coordinates(coords: NDArray) -> List[float]:
 def pymat_structure(
     lattice: List[float], coords: List[float], species: List[str]
 ) -> Structure:
+    """Create Pymatgen Structure object
+
+    Args:
+        lattice (List[float]): Original object of lattice.
+        coords (List[float]): Original object of fractional coordinates.
+        species (List[str]): List of specie.
+
+    Returns:
+        Structure: Pymatgen Structure object.
+    """
     assert (len(coords) % 3) == 0
     n_free_atom = len(coords) // 3
 
@@ -71,15 +89,23 @@ def pymat_structure(
     )
     frac_coords = [[0.0, 0.0, 0.0]]
     for i in range(n_free_atom):
-        i_begin = 3 * i
-        i_end = 3 * (i + 1)
-        frac_coords.append(coords[i_begin:i_end])
+        begin = 3 * i
+        end = 3 * (i + 1)
+        frac_coords.append(coords[begin:end])
     return Structure(pymat_lattice, species, frac_coords)
 
 
 def extract_optimized_structure(
     structure: Structure,
 ) -> Tuple[List[float], List[float], List[str]]:
+    """Extract original structure object where fractional coordinates is optimized
+
+    Args:
+        structure (Structure): Object of structure.
+
+    Returns:
+        Tuple[List[float], List[float], List[str]]: Original structure objects.
+    """
     lattice = list(structure.lattice.parameters)
     coords = optimize_fractional_coordinates(structure.frac_coords)
 
@@ -93,6 +119,16 @@ def extract_optimized_structure(
 def refine_cell(
     lattice: List[float], coords: List[float], species: List[str]
 ) -> Tuple[List[float], List[float], List[str]]:
+    """Refine original structure objects
+
+    Args:
+        lattice (List[float]): Original object of lattice.
+        coords (List[float]): Original object of fractional coordinates.
+        species (List[str]): List of specie.
+
+    Returns:
+        Tuple[List[float], List[float], List[str]]: Original structure objects.
+    """
     structure = pymat_structure(lattice, coords, species)
     analyzer = SpacegroupAnalyzer(structure, symprec=1e-05, angle_tolerance=-1.0)
     refined_structure = analyzer.get_refined_structure()
@@ -101,6 +137,11 @@ def refine_cell(
 
 
 def refine_poscar_file(poscar_name: str = "POSCAR") -> None:
+    """Refine POSCAR
+
+    Args:
+        poscar_name (str, optional): Path to POSCAR. Defaults to "POSCAR".
+    """
     # Read POSCAR
     structure = Poscar.from_file(poscar_name).structure
     lattice, coords, species = extract_optimized_structure(structure)
