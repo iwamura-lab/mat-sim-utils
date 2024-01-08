@@ -1,4 +1,5 @@
 import multiprocessing
+import re
 from pathlib import Path
 from subprocess import run
 
@@ -6,6 +7,31 @@ from pymatgen.io.vasp import Vasprun
 
 from mat_sim_apps.structure import refine_poscar_file
 from mat_sim_apps.utils import extract_vasprun_id
+
+
+def check_std_log() -> str:
+    """Check std.log in current directory
+
+    Returns:
+        str: The status code based on std.log.
+    """
+    band_crossing_pattern = re.compile(r".*band-crossing.*")
+    error_pattern = re.compile(r".*error.*", re.IGNORECASE)
+    warning_pattern = re.compile(r".*warning.*", re.IGNORECASE)
+
+    with open("std.log") as f:
+        lines = [line.strip() for line in f]
+    status_code = "SUCCESS"
+    for line in lines:
+        if band_crossing_pattern.match(line):
+            status_code = "NBANDS"
+            break
+        if error_pattern.match(line):
+            status_code = "ERROR"
+        if warning_pattern.match(line):
+            status_code = "WARNING"
+
+    return status_code
 
 
 def run_vasp() -> None:
