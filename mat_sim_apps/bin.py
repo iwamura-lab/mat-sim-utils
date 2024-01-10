@@ -34,13 +34,21 @@ def check_std_log() -> str:
     return status_code
 
 
-def run_vasp() -> None:
-    """Run VASP"""
+def run_vasp() -> str:
+    """Run VASP
+
+    Returns:
+        str: The status code.
+    """
     run(["cp", "POSCAR", "POSCAR.init"])
 
     n_core = multiprocessing.cpu_count()
     vasp_command = ["mpirun", "-np", str(n_core), "/usr/local/calc/vasp/vasp544mpi"]
     run(vasp_command)
+
+    status_code = check_std_log()
+
+    return status_code
 
 
 # flake8: noqa: CCR001
