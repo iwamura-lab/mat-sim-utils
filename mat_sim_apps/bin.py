@@ -15,6 +15,13 @@ def check_std_log() -> str:
     Returns:
         str: The status code based on std.log.
     """
+    std_log_bak_path = Path("std.log.bak")
+    if std_log_bak_path.is_file():
+        with std_log_bak_path.open("r") as f:
+            begin_lid = len(f.readlines())
+    else:
+        begin_lid = 0
+
     band_crossing_pattern = re.compile(r".*band-crossing.*")
     error_pattern = re.compile(r".*error.*", re.IGNORECASE)
     warning_pattern = re.compile(r".*warning.*", re.IGNORECASE)
@@ -22,7 +29,7 @@ def check_std_log() -> str:
     with open("std.log") as f:
         lines = [line.strip() for line in f]
     status_code = "SUCCESS"
-    for line in lines:
+    for line in lines[begin_lid:]:
         if band_crossing_pattern.match(line):
             status_code = "NBANDS"
             break
@@ -99,6 +106,7 @@ def relax_by_vasp(
         run(vasp_command)
 
         status_code = check_std_log()
+        run(["cp", "std.log", "std.log.bak"])
         if status_code != "SUCCESS":
             break
 
