@@ -1,5 +1,6 @@
 import multiprocessing
 import re
+import shutil
 from pathlib import Path
 from subprocess import run
 
@@ -47,13 +48,19 @@ def run_vasp() -> str:
     Returns:
         str: The status code.
     """
-    run(["cp", "POSCAR", "POSCAR.init"])
+    poscar_path = Path.cwd() / "POSCAR"
+    poscar_init_path = Path.cwd() / "POSCAR.init"
+    if poscar_init_path.exists():
+        shutil.copyfile(poscar_init_path, poscar_path)
+    else:
+        shutil.copyfile(poscar_path, poscar_init_path)
 
     n_core = multiprocessing.cpu_count()
     vasp_command = ["mpirun", "-np", str(n_core), "/usr/local/calc/vasp/vasp544mpi"]
     run(vasp_command)
 
     status_code = check_std_log()
+    run(["cp", "std.log", "std.log.bak"])
 
     return status_code
 
