@@ -19,7 +19,11 @@ def main(command, job_name) -> None:
 
     logging.info(" Make calculation directory, 'work'")
 
-    output_dir_path = Path.cwd() / "work"
+    pool_dir_path = Path.cwd() / "work"
+    if not pool_dir_path.exists():
+        pool_dir_path.mkdir()
+
+    output_dir_path = pool_dir_path / job_name
     output_dir_path.mkdir()
 
     logging.info(" Write a job script")
