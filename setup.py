@@ -45,6 +45,7 @@ setup(
             "show_mem_alloc=mat_sim_apps.scripts.show_mem_alloc:main",
             f"structure_converter={structure_converter_src}",
             "cif_to_poscar=mat_sim_apps.scripts.cif_to_poscar:main",
+            "csv_to_latex=mat_sim_apps.scripts.csv_to_latex:main",
         ],
     },
 )
