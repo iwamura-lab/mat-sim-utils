@@ -1,8 +1,9 @@
-lammps_api
-mypy
-flake8
 black
+build
+coverage
+flake8
+mypy
 pre-commit
+pyroma
 pytest
 pytest-cov
-coverage
