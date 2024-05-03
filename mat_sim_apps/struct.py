@@ -2,11 +2,28 @@ from typing import Dict, List, Optional, Tuple
 
 from ase.io import read
 from ase.io.vasp import write_vasp
+from monty.io import zopen
 from numpy.typing import NDArray
 from pymatgen.core import Lattice, Structure
 from pymatgen.core.periodic_table import Element
 from pymatgen.io.vasp import Poscar
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
+
+
+def read_poscar(filename: str, primitive: bool = False) -> Structure:
+    """Read POSCAR and create Structure object
+
+    Args:
+        filename (str): The path to a POSCAR.
+        primitive (bool, optional): Whether to convert to a primitive cell.
+            Defaults to False.
+
+    Returns:
+        Structure: Object representing a structure.
+    """
+    with zopen(filename, mode="rt", errors="replace") as f:
+        content = f.read()
+    return Structure.from_str(content, fmt="poscar", primitive=primitive)
 
 
 def convert_lammps_structure_to_poscar_by_ase(
