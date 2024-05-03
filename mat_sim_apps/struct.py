@@ -1,7 +1,8 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from ase.io import read
 from ase.io.vasp import write_vasp
+from monty.io import zopen
 from numpy.typing import NDArray
 from pymatgen.core import Lattice, Structure
 from pymatgen.core.periodic_table import Element
@@ -9,18 +10,34 @@ from pymatgen.io.vasp import Poscar
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
 
+def read_poscar(filename: str, primitive: bool = False) -> Structure:
+    """Read POSCAR and create Structure object
+
+    Args:
+        filename (str): The path to a POSCAR.
+        primitive (bool, optional): Whether to convert to a primitive cell.
+            Defaults to False.
+
+    Returns:
+        Structure: Object representing a structure.
+    """
+    with zopen(filename, mode="rt", errors="replace") as f:
+        content = f.read()
+    return Structure.from_str(content, fmt="poscar", primitive=primitive)
+
+
 def convert_lammps_structure_to_poscar_by_ase(
     lammps_structure_file: str,
     poscar_structure_file: str,
-    symbol_of_each_type: Dict[int, str] = None,
+    symbol_of_each_type: Optional[Dict[int, str]] = None,
 ) -> None:
     """Convert lammps structure file to POSCAR format
 
     Args:
         lammps_structure_file (str): lammps-data format structure filename
         poscar_structure_file (str): poscar format structure filename
-        symbol_of_each_type (Dict[int, str], optional): The element symbol of each type
-            in original lammps structure. Defaults to None.
+        symbol_of_each_type (Optional[Dict[int, str]], optional): The element symbol
+            of each type in original lammps structure. Defaults to None.
     """
     if symbol_of_each_type is None:
         z_of_type = None
