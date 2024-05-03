@@ -6,7 +6,7 @@ from subprocess import run
 
 from pymatgen.io.vasp import Vasprun
 
-from mat_sim_apps.structure import refine_poscar_file
+from mat_sim_apps.struct import refine_poscar_file
 from mat_sim_apps.utils import extract_vasprun_id
 
 

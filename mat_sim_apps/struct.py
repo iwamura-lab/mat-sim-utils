@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from ase.io import read
 from ase.io.vasp import write_vasp
@@ -12,15 +12,15 @@ from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 def convert_lammps_structure_to_poscar_by_ase(
     lammps_structure_file: str,
     poscar_structure_file: str,
-    symbol_of_each_type: Dict[int, str] = None,
+    symbol_of_each_type: Optional[Dict[int, str]] = None,
 ) -> None:
     """Convert lammps structure file to POSCAR format
 
     Args:
         lammps_structure_file (str): lammps-data format structure filename
         poscar_structure_file (str): poscar format structure filename
-        symbol_of_each_type (Dict[int, str], optional): The element symbol of each type
-            in original lammps structure. Defaults to None.
+        symbol_of_each_type (Optional[Dict[int, str]], optional): The element symbol
+            of each type in original lammps structure. Defaults to None.
     """
     if symbol_of_each_type is None:
         z_of_type = None
