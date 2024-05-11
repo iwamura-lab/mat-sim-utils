@@ -4,7 +4,7 @@ from typing import List
 import click
 
 
-def format_latex_table_item(item: str, column_type: str) -> str:
+def format_latex_table_item(item: str, column_type: str) -> str:  # noqa: CCR001
     """Format an item in LaTeX table
 
     Args:
@@ -14,6 +14,9 @@ def format_latex_table_item(item: str, column_type: str) -> str:
     Returns:
         str: A formatted item.
     """
+    if item == "---":
+        return item
+
     if column_type == "formula":
         m = re.match(r"([A-Z][a-z]*)([\d\.]*)([A-Z][a-z]*)([\d\.]*)", item)
         assert m is not None
