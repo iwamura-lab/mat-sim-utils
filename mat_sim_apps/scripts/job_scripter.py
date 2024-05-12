@@ -16,7 +16,7 @@ def main(commands, job_name) -> None:
     \b
     It is possible to execute multiple commands.
     Example)
-    job_scripter ls ~;cat ~/.zshrc
+    job_scripter ls ~:cat ~/.zshrc
     """
     logging.basicConfig(level=logging.INFO)
 
@@ -27,14 +27,14 @@ def main(commands, job_name) -> None:
     logging.info(" Make calculation directory, 'work'")
 
     output_dir_path = Path.cwd() / "work" / job_name
-    if output_dir_path.exists:
+    if output_dir_path.exists():
         shutil.rmtree(output_dir_path)
 
     output_dir_path.mkdir(parents=True)
 
     logging.info(" Write a job script")
 
-    command_list = " ".join(commands).split(";")
+    command_list = " ".join(commands).split(":")
     content = create_job_script(command_list, job_name)
 
     job_script_path = output_dir_path / "job.sh"
