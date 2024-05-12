@@ -1,11 +1,11 @@
 from typing import List
 
 
-def create_job_script(command: List[str], job_name: str) -> str:
+def create_job_script(command_list: List[str], job_name: str) -> str:
     """Create job script
 
     Args:
-        command (List[str]): An executed command.
+        command_list (List[str]): List of executed commands.
         job_name (str): The name of a job.
 
     Returns:
@@ -26,9 +26,9 @@ def create_job_script(command: List[str], job_name: str) -> str:
         ". ~/.zprofile",
         ". ~/.zshrc",
         "pyenv activate structural_search",
-        " ".join(command),
-        "",
     ]
+    lines.extend(command_list)
+    lines.append("")
     content = "\n".join(lines)
 
     return content
