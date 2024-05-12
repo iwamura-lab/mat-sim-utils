@@ -1,4 +1,5 @@
 import logging
+import shutil
 from pathlib import Path
 
 import click
@@ -25,12 +26,11 @@ def main(commands, job_name) -> None:
 
     logging.info(" Make calculation directory, 'work'")
 
-    pool_dir_path = Path.cwd() / "work"
-    if not pool_dir_path.exists():
-        pool_dir_path.mkdir()
+    output_dir_path = Path.cwd() / "work" / job_name
+    if output_dir_path.exists:
+        shutil.rmtree(output_dir_path)
 
-    output_dir_path = pool_dir_path / job_name
-    output_dir_path.mkdir()
+    output_dir_path.mkdir(parents=True)
 
     logging.info(" Write a job script")
 
