@@ -8,7 +8,7 @@ from mat_sim_apps.fileio import create_job_script
 
 
 @click.command()
-@click.argument("commands", nargs=-1)
+@click.argument("commands")
 @click.option("-j", "--job_name", help="The name of a job.")
 def main(commands, job_name) -> None:
     """Create a job script which execute given commands
@@ -16,7 +16,7 @@ def main(commands, job_name) -> None:
     \b
     It is possible to execute multiple commands.
     Example)
-    job_scripter ls ~:cat ~/.zshrc
+    job_scripter "ls ~:cat ~/.zshrc"
     """
     logging.basicConfig(level=logging.INFO)
 
@@ -34,7 +34,7 @@ def main(commands, job_name) -> None:
 
     logging.info(" Write a job script")
 
-    command_list = " ".join(commands).split(":")
+    command_list = commands.split(":")
     content = create_job_script(command_list, job_name)
 
     job_script_path = output_dir_path / "job.sh"
