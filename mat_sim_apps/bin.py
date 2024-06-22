@@ -71,6 +71,7 @@ def relax_by_vasp(
     refine_poscar: bool = False,
     run_static: bool = False,
     max_iterations: int = 10,
+    check: bool = True,
 ) -> str:
     """Relax by VASP
 
@@ -82,6 +83,7 @@ def relax_by_vasp(
         run_static (bool, optional): Whether to run extra static calculation or not.
             Defaults to False.
         max_iterations (int, optional): The maximum of iterations. Defaults to 10.
+        check (bool, optional): Whether to check std.log or not. Defaults to True.
 
     Returns:
         str: The status code.
@@ -112,7 +114,8 @@ def relax_by_vasp(
     for i in range(max_iterations):
         run(vasp_command)
 
-        status_code = check_std_log()
+        if check:
+            status_code = check_std_log()
         run(["cp", "std.log", "std.log.bak"])
         if status_code != "SUCCESS":
             break
