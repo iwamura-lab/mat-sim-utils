@@ -8,10 +8,17 @@ from pymatgen.io.vasp import Poscar
 @click.command()
 @click.option("-i", "--input_file", help="Path to a CIF file.")
 @click.option("-o", "--output_file", help="Path to a new POSCAR.")
-def main(input_file, output_file) -> None:
+@click.option(
+    "-t",
+    "--tolerance",
+    default=1e-04,
+    show_default=True,
+    help="The tolerance for site distance.",
+)
+def main(input_file, output_file, tolerance) -> None:
     """Convert a CIF file to a POSCAR"""
     # Convert CIF data to POSCAR data
-    parser = CifParser(input_file, check_cif=False)
+    parser = CifParser(input_file, site_tolerance=tolerance, check_cif=True)
     structure = parser.parse_structures(primitive=False)[0]
     poscar = Poscar(structure)
 
@@ -23,3 +30,4 @@ def main(input_file, output_file) -> None:
     content = poscar.get_str(significant_figures=16)
     with output_file_path.open("w") as f:
         f.write(content)
+        print("", file=f)
