@@ -1,12 +1,13 @@
 from typing import List
 
 
-def create_job_script(command_list: List[str], job_name: str) -> str:
+def create_job_script(command_list: List[str], job_name: str, venv_name: str) -> str:
     """Create job script
 
     Args:
         command_list (List[str]): List of executed commands.
         job_name (str): The name of a job.
+        venv_name (str): The name of a Python virtual environment.
 
     Returns:
         str: The content of a job script.
@@ -25,7 +26,7 @@ def create_job_script(command_list: List[str], job_name: str) -> str:
         "",
         ". ~/.zprofile",
         ". ~/.zshrc",
-        "pyenv activate structural_search",
+        f"pyenv activate {venv_name}",
     ]
     lines.extend(command_list)
     lines.append("")
