@@ -38,7 +38,7 @@ def main(commands, job_name) -> None:
     logging.info(" Write a job script")
 
     command_list = commands.split(":")
-    content = create_job_script(command_list, job_name)
+    content = create_job_script(command_list, job_name, venv_name="csp_scipy")
 
     job_script_path = output_dir_path / "job.sh"
     with job_script_path.open("w") as f:
