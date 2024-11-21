@@ -112,6 +112,31 @@ def pymat_structure(
     return Structure(pymat_lattice, species, frac_coords)
 
 
+def fix_species_in_structure(structure: Structure, species: List[str]) -> Structure:
+    """Fix the order of species in a structure
+
+    Args:
+        structure (Structure): Object of structure.
+        species (List[str]): List of specie.
+
+    Returns:
+        Structure: Object of a fixed structure.
+    """
+    set_species = [str(s).split()[-1] for s in structure.species]
+    if set_species == species:
+        return structure
+    else:
+        used = [False for _ in set_species]
+        frac_coords = []
+        for specie in species:
+            for i, set_specie in enumerate(set_species):
+                if (set_specie == specie) and not used[i]:
+                    used[i] = True
+                    frac_coords.append(structure.frac_coords[i])
+                    break
+        return Structure(structure.lattice, species, frac_coords)
+
+
 def extract_optimized_structure(
     structure: Structure,
 ) -> Tuple[List[float], List[float], List[str]]:
@@ -149,6 +174,7 @@ def refine_cell(
     structure = pymat_structure(lattice, coords, species)
     analyzer = SpacegroupAnalyzer(structure, symprec=1e-05, angle_tolerance=-1.0)
     refined_structure = analyzer.get_refined_structure()
+    refined_structure = fix_species_in_structure(refined_structure, species)
 
     return extract_optimized_structure(refined_structure)
 
